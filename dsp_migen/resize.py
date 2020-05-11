@@ -7,8 +7,6 @@
 
 import sys
 
-import pyfda_fix_lib as fx
-
 from migen import Cat, If, Replicate, Signal
 
 
