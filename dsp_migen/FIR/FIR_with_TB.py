@@ -13,7 +13,7 @@ sample = 5000       #Number of Samples
 Fs = 5000           #Sample Frequ
 fc = 100           #Cutoff Frequ
 w_c = 2*fc/Fs       #Digital Frequ
-n = 4               #Order
+n = 40               #Order
 
 
 # A synthesizable FIR filter.
