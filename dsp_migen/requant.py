@@ -10,7 +10,7 @@ import sys
 from migen import Cat, If, Replicate, Signal
 
 
-def resize(mod, sig_i, QI, QO):
+def requant(mod, sig_i, QI, QO):
     """
     Change word length of input signal `sig_i` to `WO` bits, using the 
     quantization and saturation methods specified by ``QO['quant']`` and 
@@ -45,7 +45,6 @@ def resize(mod, sig_i, QI, QO):
     Documentation
     -------------
     
-    
     **Input and output word are aligned at their binary points.**
     
     The following shows an example of rescaling an input word from Q2.4 to Q0.3
@@ -68,7 +67,8 @@ def resize(mod, sig_i, QI, QO):
     to be right-aligned. Changes in the number of integer bits `dWI` and fractional
     bits `dWF` are handled separately.
     
-    Fractional Bits:
+    Fractional Bits
+    ---------------
     
     - For reducing the number of fractional bits by `dWF`, simply right-shift the
       integer number by `dWF`. For rounding, add '1' to the bit below the truncation
@@ -77,7 +77,8 @@ def resize(mod, sig_i, QI, QO):
     - Extend the number of fractional bits by left-shifting the integer by `dWF`,
       LSB's are filled with zeros.
       
-    Integer Bits:
+    Integer Bits
+    ------------
     
     - For reducing the number of integer bits by `dWI`, simply right-shift the
       integer by `dWI`.
@@ -141,20 +142,6 @@ def resize(mod, sig_i, QI, QO):
     elif QO['ovfl'] == 'wrap': # wrap around (shift left)
         mod.comb += sig_o.eq(sig_i_q)
 
-# =============================================================================
-#             If(sig_i_q[-1] == 1,
-#                If(sig_i_q[-1:-dWI-1] != Replicate(sig_i_q[-1], dWI),
-#             #If(sig_i_q < MIN_o,
-#             #If(sig_i_q[WO-1:] == 0b10,
-#                     sig_o.eq(MIN_o)
-#                 ).Else(sig_o.eq(sig_i_q)# >> dWI
-#             ).Elif(sig_i_q > MAX_o,
-#             #).Elif(sig_i_q[WO-1:] == 0b01,
-#                 sig_o.eq(MAX_o)
-#             ).Else(sig_o.eq(sig_i_q)# >> dWI)
-#             )
-# =============================================================================
-
     else:
         raise Exception(u'Unknown overflow method "%s"!'%(QI['ovfl']))
 
@@ -166,4 +153,5 @@ def resize(mod, sig_i, QI, QO):
 # if __name__ == '__main__':
 # 
 #     app.exec_()
+# test using "python -m requant"
 # =============================================================================
