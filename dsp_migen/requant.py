@@ -83,7 +83,7 @@ def requant(mod, sig_i, QI, QO):
     - For reducing the number of integer bits by `dWI`, simply right-shift the
       integer by `dWI`.
     
-    - The number of fractional bits is SIGN-EXTENDED by filling up the left-most
+    - The number of integer bits is SIGN-EXTENDED by filling up the left-most
       bits with the sign bit.
     
     """
